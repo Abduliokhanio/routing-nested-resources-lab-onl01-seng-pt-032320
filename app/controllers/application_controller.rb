@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   private
   def artist_song_not_found
     flash[:alert] = "Song not found for that artist"
-    redirect_to artists_path
+    redirect_to artist_songs_path
   end
   def song_not_found
     flash[:alert] = "Song not found"
