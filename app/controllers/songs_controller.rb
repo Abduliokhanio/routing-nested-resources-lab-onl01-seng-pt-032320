@@ -1,5 +1,5 @@
 class SongsController < ApplicationController
-  before_action :set_artist, only: [:index, :show]
+before_action :set_artist, only: [:index, :show]
   def index
     if params[:artist_id]
       @songs = @artist.songs
@@ -9,7 +9,13 @@ class SongsController < ApplicationController
   end
 
   def show
-    @song = Song.find(params[:id])
+    if params[:artist_id]
+      @song = @artist.songs.find_by(id: params[:id])
+      raise ArtistSongNotFound if @song.nil?
+    else
+      @song = Song.find_by(id: params[:id])
+      raise SongNotFound if @song.nil?
+    end
   end
 
   def new
@@ -56,8 +62,9 @@ class SongsController < ApplicationController
   end
 
   def set_artist
-   if params[:artist_id]
-     @artist = Artist.find_by(id: params[:artist_id])
-     raise ArtistNotFound if @artist.nil?
-   end
+    if params[:artist_id]
+      @artist = Artist.find_by(id: params[:artist_id])
+      raise ArtistNotFound if @artist.nil?
+    end
+  end
 end
