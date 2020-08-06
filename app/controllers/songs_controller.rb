@@ -1,7 +1,11 @@
 class SongsController < ApplicationController
   before_action :set_artist, only: [:index, :show]
   def index
-    @songs = Song.all
+    if params[:artist_id]
+      @songs = @artist.songs
+    else
+      @songs = Song.all
+    end
   end
 
   def show
